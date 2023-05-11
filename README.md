@@ -21,6 +21,8 @@
 
 ![Terminal png](https://react-terminal.sirv.com/static/terminal-dracula.png)
 
+在这个fork中为了实现自己的需求对函数进行了更改defaultHandler函数获取的返回值空格前是否为no来再次获取 如果为no defaultHandler会被再次调用获取数据并且第二个参数为字符串"next_get_data" 并且现在支持换行了
+
 ## Features
 - Mobile support. 📱
 - Customizable commands, prompt and error message. ✅
