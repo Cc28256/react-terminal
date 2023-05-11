@@ -119,8 +119,7 @@ export const useBufferedContent = (
   const style = React.useContext(StyleContext);
   const themeStyles = React.useContext(ThemeContext);
 
-  React.useEffect(
-    () => {
+    React.useEffect(() => {
       if (!processCurrentLine) {
         return;
       }
@@ -148,6 +147,7 @@ export const useBufferedContent = (
             <br />
           </>
         );
+
         setBufferedContent(waiting);
         setCurrentText("");
         setCaretPosition(0);
@@ -166,7 +166,43 @@ export const useBufferedContent = (
               output = executor;
             }
           } else if (typeof defaultHandler === "function") {
-            output = await defaultHandler(command, commandArguments);
+
+            var curCom = command;
+            var curComAs = commandArguments;
+            var allRerurn = commandArguments;
+           while (true) {
+
+            output = await defaultHandler(curCom, curComAs);
+            const [firstStr, ...surplusStr] = output.trim().split(" ");
+            allRerurn = allRerurn + surplusStr;
+            console.log(allRerurn);
+            if(firstStr === "no"){
+              const nextBufferedContent = (
+                <>
+                  {bufferedContent}
+                  <span style={{ color: themeStyles.themePromptColor }}>{prompt}</span>
+                  <span className={`${style.lineText} ${style.preWhiteSpace}`}>{currentText}</span>
+                  {allRerurn ? (
+                    <span>
+                      <br />
+                      <pre>
+                      {allRerurn}
+                      </pre>
+                    </span>
+                  ) : null}
+                  <br />
+                </>
+              );
+              setBufferedContent(nextBufferedContent);
+            }else{
+              output = allRerurn;
+              break
+            }
+
+           }
+
+           
+
           } else if (typeof errorMessage === "function") {
             output = await errorMessage(command, commandArguments);
           } else {
@@ -180,10 +216,12 @@ export const useBufferedContent = (
             <span style={{ color: themeStyles.themePromptColor }}>{prompt}</span>
             <span className={`${style.lineText} ${style.preWhiteSpace}`}>{currentText}</span>
             {output ? (
-              <span>
-                <br />
-                {output}
-              </span>
+               <span>
+               <br />
+                <pre>
+                   {output}
+               </pre>
+             </span>
             ) : null}
             <br />
           </>
