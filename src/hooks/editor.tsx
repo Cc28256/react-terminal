@@ -177,6 +177,7 @@ export const useBufferedContent = (
             allRerurn = allRerurn + surplusStr;
             console.log(allRerurn);
             if(firstStr === "no"){
+              curComAs = "next_get_data"
               const nextBufferedContent = (
                 <>
                   {bufferedContent}
@@ -185,7 +186,7 @@ export const useBufferedContent = (
                   {allRerurn ? (
                     <span>
                       <br />
-                      <pre>
+                      <pre className={`${style.editor}`}>
                       {allRerurn}
                       </pre>
                     </span>
@@ -218,7 +219,7 @@ export const useBufferedContent = (
             {output ? (
                <span>
                <br />
-                <pre>
+               <pre className={`${style.editor}`}>
                    {output}
                </pre>
              </span>
